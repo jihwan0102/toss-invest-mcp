@@ -1,0 +1,36 @@
+# /etc/systemd/system/toss-invest-mcp.service
+#   sudo useradd --system --home /var/lib/toss-invest-mcp --shell /usr/sbin/nologin tossmcp
+#   sudo install -d -o tossmcp -g tossmcp -m 700 /var/lib/toss-invest-mcp
+#   sudo python3 -m venv /opt/toss-invest-mcp && sudo /opt/toss-invest-mcp/bin/pip install git+https://github.com/jihwan0102/toss-invest-mcp
+#   sudo install -m 640 -g tossmcp .env.example /etc/toss-invest-mcp.env   # 값 채우기
+#   sudo systemctl enable --now toss-invest-mcp
+[Unit]
+Description=toss-invest-mcp (Toss Invest MCP server)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=tossmcp
+Group=tossmcp
+EnvironmentFile=/etc/toss-invest-mcp.env
+Environment=DATA_DIR=/var/lib/toss-invest-mcp
+ExecStart=/opt/toss-invest-mcp/bin/toss-invest-mcp serve --http
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=5
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/toss-invest-mcp
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

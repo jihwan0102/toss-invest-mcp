@@ -1,0 +1,52 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "toss-invest-mcp"
+dynamic = ["version"]
+description = "Unofficial MCP server for the Toss Invest (토스증권) Open API, with guard-railed ordering"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+authors = [{ name = "jihwan0102" }]
+keywords = ["mcp", "toss", "tossinvest", "토스증권", "trading", "claude", "llm"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Natural Language :: Korean",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Topic :: Office/Business :: Financial :: Investment",
+]
+dependencies = [
+  "mcp>=2.2,<3",
+  "httpx>=0.27,<1",
+  "uvicorn>=0.31",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-asyncio>=0.24", "ruff>=0.6"]
+
+[project.scripts]
+toss-invest-mcp = "toss_invest_mcp.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/jihwan0102/toss-invest-mcp"
+Issues = "https://github.com/jihwan0102/toss-invest-mcp/issues"
+
+[tool.hatch.version]
+path = "src/toss_invest_mcp/__init__.py"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 140
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["E501", "B905"]
